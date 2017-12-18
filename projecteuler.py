@@ -1,4 +1,7 @@
 import random
+import itertools
+from functools import reduce # Valid in Python 2.6+, required in Python 3
+import operator # use reduce(operator.mul, (3, 4, 5), 1) to have a multiplication operator similar to sum()
 
 def prime_factors(n):
     i = 2
@@ -59,11 +62,17 @@ def divisors(n):
     list_divisors = [1, n]
     prime_factors_n = prime_factors(n)
 
-    for i in range(len(prime_factors_n)):
-        j = 1
-        while (j * prime_factors_n[i]) <= n and (n % (j * prime_factors_n[i])) == 0:
-            list_divisors.append(j * prime_factors_n[i])
-            j += 1
+    # generate combinations of the prime factors
+    _cbs = []
+    for i in range(1, len(prime_factors_n)):
+        _cbs.append(list(itertools.combinations(prime_factors_n, i)))
+    # remove duplicate combinations
+    _cbs = [list(set(_cbs[i])) for i in range(len(_cbs))]
+
+    # compute all the possible products from the prime factors
+    for i in range(len(prime_factors_n) - 1):
+        for j in range(len(_cbs[i])):
+            list_divisors.append(reduce(operator.mul, _cbs[i][j], 1)) 
 
     return sorted(list(set(list_divisors)))
     
