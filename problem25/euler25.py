@@ -20,4 +20,4 @@ if __name__ == "__main__":
     import time
     start_time = time.time()
     main()
-    print("--- Time of execution: %s seconds ---" % (time.time() - start_time))
+    print("\n\n--- Time of execution: %s seconds ---" % (time.time() - start_time))
